@@ -92,10 +92,11 @@ function localGetHealth(): HealthStatus {
   return { status: 'ok' }
 }
 
-// TODO(USE_MOCK): verify path + response shape against the real backend's
-// OpenAPI schema before flipping this to false. When false, requests go to
-// `${REACT_APP_API_URL}/api/tasks` via src/api/client.ts (fetch-based).
-export const USE_MOCK = true
+// Requests go to `${REACT_APP_API_URL}/api/tasks` via src/api/client.ts (fetch-based); with
+// REACT_APP_API_URL empty they go to `/api/...` on this host, which nginx forwards to the backend.
+// Checked against the backend's serializer: id, title, description, priority, completed, createdAt.
+// Set to true only to run the UI without a backend (local mock data in localStorage).
+export const USE_MOCK = false
 
 export async function getTasks(): Promise<Task[]> {
   if (USE_MOCK) return localGetTasks()
